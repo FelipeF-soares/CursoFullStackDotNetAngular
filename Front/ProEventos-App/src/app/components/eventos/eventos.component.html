@@ -1,5 +1,4 @@
-<h2>Eventos</h2>
-<hr>
+<app-titulo [titulo]="'Eventos'"></app-titulo>
 <div class="form-inline">
     <div class="form-group mb-2">
       <label class="mr-2">Filtro:</label>
@@ -17,6 +16,7 @@
         <th scope="col">
             <button type="button" class="btn btn-outline-light btn-sm" 
             (click)="isCollapsed = !isCollapsed">
+            <i class="{{isCollapsed ? 'fa fa-eye':'fa fa-eye-slash'}}"></i>
             {{isCollapsed ? "Exibir":"Ocultar"}}
             </button>  
         </th>
@@ -36,15 +36,21 @@
           [isAnimated]="true" src="/assets/{{evento.imagemURL}}" 
           alt="Foto do Evento" width="150px">
         </td>
-        <th scope="row">{{evento.eventoId}}</th>
+        <th scope="row">{{evento.id}}</th>
         <td>{{evento.tema}}</td>
         <td>{{evento.local}}</td>
-        <td>{{evento.dataEvento}}</td>
-        <td>{{evento.qtnPessoas}}</td>
-        <td>{{evento.lote}}</td>
+        <td>{{evento.dataEvento | DateTimeFormartPipe}}</td>
+        <td>{{evento.qtdPessoas}}</td>
+        <td>{{evento.lotes[0].nome | uppercase}}</td>
         <td>
-          <button type="button" class="btn btn-primary btn-sm mr-2">Editar</button>
-          <button type="button" class="btn btn-danger btn-sm">Excluir</button>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Editar">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -56,3 +62,11 @@
         </tr>
     </tfoot>
   </table>
+
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Deseja realmente excluir evento?</p>
+      <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+      <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+    </div>
+  </ng-template>
